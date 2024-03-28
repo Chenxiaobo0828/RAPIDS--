@@ -1,0 +1,1 @@
+M. Zhao, S. Zhong, X. Fu, B. Tang and M. Pecht, "Deep Residual Shrinkage Networks for Fault Diagnosis," in IEEE Transactions on Industrial Informatics, vol. 16, no. 7, pp. 4681-4690, July 2020, doi: 10.1109/TII.2019.2943898.

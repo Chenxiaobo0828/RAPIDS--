@@ -1,0 +1,25 @@
+# # -------------------- Auto-Logi --------------------------#
+cat("\014"); rm(list = ls());  options(warn = -1); pacman::p_load("foreign", "rms"); library(caret); library(ROCR); library(rmda); library(autoReg); library(rrtable)
+# setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
+Cohort = c('train.csv', 'test.csv', 'val.csv')
+Num = length(Cohort); ex = Num-2
+train_data <- read.csv(Cohort[1]); names(train_data)
+
+
+Clin_var = c(2,7,8,11,12); Rads_var = c(4)
+# for (j in c(15,16)) {Train_data[,j] = as.factor(Train_data[,j])}
+
+
+fit = glm(label~., data=Train_data[, Clin_var], family="binomial")
+Reg = autoReg(fit, uni=TRUE, threshold=0.05, final= TRUE); Reg
+table2docx(myft(Reg), title='Univariate and multivariate logistics analysis')
+
+
+
+model_var = c('var1+var2')
+Rads_formula = as.formula(paste0('label ~ ', paste0(names(train_data)[Rads_var], collapse = "+")))
+Clin_formula = as.formula(paste0('label ~ ', paste0(model_var, collapse = "+")))
+Comd_formula = as.formula(paste0('label ~ ', paste0(c(model_var, names(train_data)[Rads_var]),collapse = "+")))
+Clin_formula; Rads_formula; Comd_formula
+table2docx(myft(autoReg(glm(Comd_formula, data=Train_data, family="binomial"), uni=TRUE, threshold=1)), title='Construction of Combined model', append=TRUE)
